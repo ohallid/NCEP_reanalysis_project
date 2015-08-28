@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 
+from IPython.html.widgets import *
+
 Data=Dataset('netcdf-atls03-a562cefde8a29a7288fa0b8b7f9413f7-LtAc4K.nc')
 
 #df=pd.DataFrame(Data)
@@ -42,11 +44,18 @@ for i in range(0,12):
         for ilon in range(0,480):
             mean_temp[i,ilat,ilon]=sum(temp_all[i,:,ilat,ilon])/36.0 #[month,lat,lon]
 
-#for j in range(0,36):
-#    anom_temp=temp_all[:,j,:,:]-mean_temp[:,:,:]
+anom_temp = np.empty([12,36,241,480])
+
+for j in range(0,36):
+    anom_temp[:,j,:,:]=temp_all[:,j,:,:]-mean_temp[:,:,:]
 
 print mean_temp.shape
 
-#print anom_temp[0,0,0]
+print anom_temp.shape
+
+jul_anom=anom_temp[6,:,:,:]
 
 
+
+
+interact(plt.imshow(anom_temp[month,year,:,:]),month=(0,12,1),year=(0,36,1))
