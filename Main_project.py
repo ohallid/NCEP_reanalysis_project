@@ -35,10 +35,12 @@ for j in range(0,12):
 #    var_all[k,:,:,:,:] = slp_all           
 # var_all[5,12,36,241,480]=[variable,month,year,lat,lon]
 
+mean_temp = np.empty([12,241,480])
+
 for i in range(0,12):
     for ilat in range(0,241):
         for ilon in range(0,480):
-            mean_temp=sum(temp_all[i,:,ilat,ilon])/36.0 #[month,lat,lon]
+            mean_temp[i,ilat,ilon]=sum(temp_all[i,:,ilat,ilon])/36.0 #[month,lat,lon]
 
 #for j in range(0,36):
 #    anom_temp=temp_all[:,j,:,:]-mean_temp[:,:,:]
