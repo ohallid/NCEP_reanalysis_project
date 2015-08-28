@@ -1,36 +1,50 @@
-
 from netCDF4 import Dataset
 
 import numpy as np
 
 import matplotlib.pyplot as plt
 
+import pandas as pd
+
 Data=Dataset('netcdf-atls03-a562cefde8a29a7288fa0b8b7f9413f7-LtAc4K.nc')
 
-Data.shape
+#df=pd.DataFrame(Data)
 
-slp=Data.variables['msl']
 
-ivar_months = np.empty([36,241,480])
-ivar_all    = np.empty([12,36,241,480])
+
+temp=Data.variables['t2m']
+
+#for n in range(0,11):
+#    for i in range(0+n,432,12):
+#        var_all=1
+
+
+
+
+temp_months = np.empty([36,241,480])
+temp_all    = np.empty([12,36,241,480])
 var_all    = np.empty([5,12,36,241,480])
 
 #for loop for each variables
-for k in range(0,5):
-    for j in range(0,12):
-        for i in range(0, 36):
-            a  = (i * 12) + j
-            slp_months[i,:,:] = slp[a,:,:]
-        slp_all[j,:,:,:] = slp_months
-    var_all[k,:,:,:,:] = slp_all           
-
-
+#for k in range(0,2):
+for j in range(0,12):
+    for i in range(0, 36):
+        a  = (i * 12) + j
+        temp_months[i,:,:] = temp[a,:,:]
+        temp_all[j,:,:,:] = temp_months #[months,years,lat,lon]
+#    var_all[k,:,:,:,:] = slp_all           
 # var_all[5,12,36,241,480]=[variable,month,year,lat,lon]
 
-mean_jan=var_all[0,0,0,:,:]
+for i in range(0,12):
+    for ilat in range(0,241):
+        for ilon in range(0,480):
+            mean_temp=sum(temp_all[i,:,ilat,ilon])/36.0 #[month,lat,lon]
 
-for i in range(1,36):
-    mean_jan= mean_jan + var_all[0,0,i,:,:]
-mean_jan=mean_jan/36.0
-print mean_jan
+#for j in range(0,36):
+#    anom_temp=temp_all[:,j,:,:]-mean_temp[:,:,:]
+
+print mean_temp.shape
+
+#print anom_temp[0,0,0]
+
 
